@@ -110,13 +110,7 @@ retro-emulator/
 - **Select**: Shift or C
 
 **GBA:**
-- **D-Pad**: Arrow Keys or WASD
-- **A Button**: Z, J, or N
-- **B Button**: X, K, or M
-- **L Button**: Q
-- **R Button**: E
-- **Start**: Enter or Space
-- **Select**: Shift or C
+- EmulatorJS provides its own input handling. Open the gear / menu icon in the in-game overlay to remap keys and configure gamepads.
 
 ### Customizing Controls
 
@@ -241,5 +235,8 @@ The emulator itself is free to use, but ROM files are subject to their respectiv
 ---
 
 **Enjoy retro gaming in your browser!** 🎮
+
+Made with ❤️ for retro gaming enthusiasts
+Enjoy retro gaming in your browser!** 🎮
 
 Made with ❤️ for retro gaming enthusiasts

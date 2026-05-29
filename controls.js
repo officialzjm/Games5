@@ -117,13 +117,15 @@ class InputHandler {
         // Handle keydown
         document.addEventListener('keydown', (e) => {
             if (!this.emulator.running) return;
-            
+            // GBA is handled by EmulatorJS — don't intercept its keyboard input
+            if (this.emulator.currentSystem === 'gba') return;
+
             const currentKeys = this.getCurrentKeys();
             const button = currentKeys[e.code];
             if (button !== undefined) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 if (!this.pressedKeys.has(e.code)) {
                     this.pressedKeys.add(e.code);
                     this.handleButtonDown(button);
@@ -134,13 +136,15 @@ class InputHandler {
         // Handle keyup
         document.addEventListener('keyup', (e) => {
             if (!this.emulator.running) return;
-            
+            // GBA is handled by EmulatorJS — don't intercept its keyboard input
+            if (this.emulator.currentSystem === 'gba') return;
+
             const currentKeys = this.getCurrentKeys();
             const button = currentKeys[e.code];
             if (button !== undefined) {
                 e.preventDefault();
                 e.stopPropagation();
-                
+
                 this.pressedKeys.delete(e.code);
                 this.handleButtonUp(button);
             }
