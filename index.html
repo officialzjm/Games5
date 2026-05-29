@@ -83,6 +83,9 @@
                     <div id="game"></div>
                 </div>
             </div>
+            <div id="gbaSaveHint" class="gba-save-hint" style="display:none;">
+                GBA saves are stored locally in this browser. Use Save State / Load State for progress after refresh, and Export Save File for backups or moving to another device.
+            </div>
 
             <!-- NES touch controls (inline, BELOW the screen — auto-shown on touch devices when NES is selected) -->
             <div id="touchControls" class="touch-controls" style="display:none;">
@@ -124,7 +127,7 @@
                     </div>
                     <div class="control-summary-item">
                         <span class="system-chip">GBA</span>
-                        <p>EmulatorJS handles its own input and touch controls. IodineGBA is a fallback standalone player, so use its in-frame Game file picker.</p>
+                        <p>EmulatorJS handles saves, controller mapping, touch controls, and fullscreen. IodineGBA is a fallback standalone player, so use its in-frame Game file picker.</p>
                     </div>
                 </div>
             </div>

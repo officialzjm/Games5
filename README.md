@@ -33,7 +33,8 @@ https://x1n-q.github.io/Web-Based-Emulator/
 - Local ROM loading from your device. No ROM files are hosted or included.
 - Keyboard controls for NES with configurable mappings.
 - Mobile NES touch controls below the game screen.
-- EmulatorJS built-in controls for GBA on desktop and mobile.
+- EmulatorJS built-in saves, touch controls, and controller mapping for GBA.
+- GBA browser-local progress saving with save/load state and save file export/import.
 - Responsive layout for desktop, tablet, and phone screens.
 - Static web app that can run on GitHub Pages.
 
@@ -62,6 +63,8 @@ See [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) for attribution and license
 ## Important GBA Notes
 
 The default GBA option is **EmulatorJS / mGBA**. This is the recommended engine because it can use the ROM selected from the main file picker and includes its own touch/menu overlay.
+
+For GBA progress after refreshing or closing the page, use EmulatorJS **Save State** and **Load State**. In-game battery saves are synced to browser storage about every 10 seconds. Saves are local to the current browser/device, so use **Export Save File** if you want a backup or want to move progress to another device.
 
 The **IodineGBA Standalone** option is a fallback. Because it runs inside a separate embedded page, browser security does not allow this project to pass your local ROM file into it automatically. When using IodineGBA, use its own in-frame file picker to choose a game.
 
@@ -128,7 +131,9 @@ NES controls can be changed in the built-in control settings panel. On phones an
 
 ### GBA controls
 
-GBA is handled by EmulatorJS by default. Use the in-game gear/menu overlay to configure controls, volume, fullscreen, save states, and other EmulatorJS options.
+GBA is handled by EmulatorJS by default. Use the in-game gear/menu overlay to configure controls, volume, fullscreen, save states, save files, and other EmulatorJS options.
+
+Physical controllers/gamepads are handled by EmulatorJS. Connect the controller before loading a GBA ROM, then open the gamepad/settings menu if you need to remap buttons.
 
 The custom lower touch pad is intentionally hidden for GBA so it does not conflict with EmulatorJS controls.
 
@@ -172,6 +177,21 @@ Web-Based-Emulator/
 - Use the default EmulatorJS / mGBA engine first.
 - Rotate the phone or scroll slightly if the screen needs more vertical space.
 - If needed, try the IodineGBA standalone fallback from the GBA Engine selector.
+
+### GBA progress did not save
+
+- Use Save State before closing the page, then use Load State after loading the same ROM again.
+- Quick Save and Quick Load are useful during the current play session, but Save State / Load State is the safer option for progress after refresh.
+- For in-game saves, wait at least 10 seconds after saving so EmulatorJS can sync save data to browser storage.
+- Do not clear browser site data unless you exported your save first.
+- Use Export Save File for backups or moving progress to another browser/device.
+
+### GBA controller is not detected
+
+- Connect the controller before loading the ROM.
+- Press a button on the controller so the browser exposes it.
+- Open the EmulatorJS gamepad/settings menu and remap buttons if needed.
+- Try Chrome or Edge if the browser does not expose the controller correctly.
 
 ### Nothing works locally
 

@@ -186,25 +186,35 @@ class EmulatorManager {
         window.EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
         window.EJS_startOnLoaded = true;
         window.EJS_color = '#58a6ff';
+        window.EJS_controlScheme = 'gba';
+        window.EJS_defaultOptions = {
+            'save-state-location': 'browser',
+            'save-state-slot': '1',
+            'save-save-interval': '10'
+        };
+        delete window.EJS_onSaveState;
+        delete window.EJS_onLoadState;
+        delete window.EJS_onSaveSave;
+        delete window.EJS_onLoadSave;
         window.EJS_Buttons = {
             playPause: false,
             restart: false,
-            mute: false,
-            settings: false,
-            fullscreen: false,
-            saveState: false,
-            loadState: false,
-            saveSavFiles: false,
-            loadSavFiles: false,
-            gamepad: false,
+            mute: true,
+            settings: true,
+            fullscreen: true,
+            saveState: true,
+            loadState: true,
+            saveSavFiles: true,
+            loadSavFiles: true,
+            gamepad: true,
             cheat: false,
-            cacheManager: false,
+            cacheManager: true,
             netplay: false,
             diskButton: false,
-            volumeSlider: false,
+            volume: true,
             exitEmulation: false,
-            quickSave: false,
-            quickLoad: false,
+            quickSave: true,
+            quickLoad: true,
             screenshot: false,
             screenRecord: false
         };

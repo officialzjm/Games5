@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const systemSelect = document.getElementById('systemSelect');
     const gbaEngineGroup = document.getElementById('gbaEngineGroup');
     const gbaEngineSelect = document.getElementById('gbaEngineSelect');
+    const gbaSaveHint = document.getElementById('gbaSaveHint');
 
     // Core managers
     const emulator = new EmulatorManager(canvas, ctx, status, debug);
@@ -36,6 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.toggle('system-gba', system === 'gba');
         if (gbaEngineGroup) {
             gbaEngineGroup.style.display = system === 'gba' ? 'block' : 'none';
+        }
+        if (gbaSaveHint) {
+            const isEmulatorJsGba = system === 'gba' && (!gbaEngineSelect || gbaEngineSelect.value !== 'iodine');
+            gbaSaveHint.style.display = isEmulatorJsGba ? 'block' : 'none';
         }
     }
 
