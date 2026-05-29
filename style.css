@@ -772,7 +772,7 @@ input[type="file"]::file-selector-button {
 
     #screen { padding: 8px; }
     #canvas { max-height: 50vh; }
-    #game-container { max-height: 55vh; }
+    #game-container { max-height: 65vh; min-height: 320px; }
 
     .modal-header { padding: 14px 16px; }
     .modal-header h2 { font-size: 1.1rem; }
