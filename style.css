@@ -285,7 +285,7 @@ input[type="file"]::file-selector-button {
     align-items: center;
     justify-content: center;
     min-height: 0;
-    overflow: hidden;
+    /* overflow stays visible so EmulatorJS's menu bar / popups aren't clipped */
 }
 
 #canvas {
@@ -313,9 +313,11 @@ input[type="file"]::file-selector-button {
     background: #000;
     border-radius: 10px;
     border: 1px solid #343a42;
-    overflow: hidden;
-    aspect-ratio: 3 / 2;
-    max-height: 75vh;
+    /* No overflow:hidden, no strict aspect-ratio — EmulatorJS handles its own
+       letterboxing AND needs vertical room for its top menu bar (save state,
+       settings, virtual gamepad button, fullscreen). */
+    min-height: 360px;
+    max-height: 80vh;
     position: relative;
 }
 
@@ -730,7 +732,7 @@ input[type="file"]::file-selector-button {
 
 @media (max-width: 1080px) {
     #canvas { max-height: 60vh; }
-    #game-container { max-height: 65vh; }
+    #game-container { max-height: 70vh; min-height: 340px; }
 }
 
 @media (max-width: 768px) {
@@ -807,7 +809,7 @@ input[type="file"]::file-selector-button {
     #screen { padding: 6px; border-radius: 12px; }
     #canvas, #game-container { border-radius: 8px; }
     #canvas { max-height: 45vh; }
-    #game-container { max-height: 50vh; }
+    #game-container { max-height: 60vh; min-height: 300px; }
 
     #status { font-size: 0.8rem; padding: 9px 12px; min-height: 38px; }
 
@@ -825,4 +827,6 @@ input[type="file"]::file-selector-button {
     .touch-actions { width: 118px; height: 92px; }
     .action-a, .action-b { width: 55px; height: 55px; font-size: 1.2rem; }
     .system-select, .system-start { min-width: 64px; height: 28px; font-size: 0.62rem; }
+}
+x; height: 28px; font-size: 0.62rem; }
 }
