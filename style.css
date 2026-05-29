@@ -369,6 +369,32 @@ body.system-gba #game canvas {
     height: 100%;
 }
 
+@media (max-width: 768px) {
+    body.is-gba #game,
+    body.system-gba #game,
+    body.is-gba #game .ejs_game,
+    body.system-gba #game .ejs_game {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    body.is-gba #game .ejs_canvas_parent,
+    body.system-gba #game .ejs_canvas_parent {
+        aspect-ratio: 3 / 2;
+        height: auto;
+        max-height: calc(100% - 190px);
+        flex: 0 0 auto;
+    }
+
+    body.is-gba #game canvas,
+    body.system-gba #game canvas {
+        aspect-ratio: 3 / 2;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
 #status {
     margin-top: 12px;
     padding: 11px 14px;
@@ -800,8 +826,8 @@ body.system-gba #touchControls {
     #game-container { max-height: 65vh; min-height: 320px; }
     body.is-gba #game-container,
     body.system-gba #game-container {
-        height: clamp(500px, 72dvh, 660px);
-        min-height: 500px;
+        height: clamp(520px, 76dvh, 760px);
+        min-height: 520px;
         max-height: none;
     }
 
@@ -843,8 +869,8 @@ body.system-gba #touchControls {
     #game-container { max-height: 60vh; min-height: 300px; }
     body.is-gba #game-container,
     body.system-gba #game-container {
-        height: clamp(500px, 70dvh, 640px);
-        min-height: 500px;
+        height: clamp(520px, calc(100dvh - 220px), 680px);
+        min-height: 520px;
         max-height: none;
     }
 
