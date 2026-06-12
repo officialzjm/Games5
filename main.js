@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/[^a-z0-9]/g, "")
             + ".gba";
     }
-    
+    /*
     async function loadSelectedGame(gameName) {
     
         launcher.style.display = "none";
@@ -228,11 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 emulator.stop();
     
-                //await emulator.loadGBA(file);
-                console.log("ROM fetched successfully");
-                console.log("Size:", blob.size);
-                console.log(romUrl);
-                return;
+                await emulator.loadGBA(file);
                 
                 status.textContent = `Playing ${gameName}`;
     
@@ -254,7 +250,28 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+    */
+    async function loadSelectedGame(gameName) {
     
+        alert("Clicked " + gameName);
+    
+        const romFileName = gameToFilename(gameName);
+        const romUrl = `roms/${romFileName}`;
+    
+        alert("About to fetch");
+    
+        const response = await fetch(romUrl);
+    
+        alert("Fetch finished");
+    
+        const blob = await response.blob();
+    
+        alert("Blob size: " + blob.size);
+    
+        // ONLY NOW show emulator UI
+        launcher.style.display = "none";
+        screen.style.display = "block";
+    }
     games.forEach(game => {
     
         const entry = document.createElement("div");
