@@ -172,40 +172,66 @@ document.addEventListener('DOMContentLoaded', () => {
         emulator.log('Emulator ready');
     }
     // Auto-load ROM from URL
+// Auto-load ROM from URL
     (async () => {
         const params = new URLSearchParams(window.location.search);
-
+    
         const romUrl = params.get("rom");
         const system = params.get("system");
-
+    
         if (!romUrl) return;
-
-        try {
-            if (system) {
-                systemSelect.value = system;
-                emulator.setSystem(system);
+    
+        const MAX_RETRIES = 5;
+        const RETRY_DELAY = 5000; // 5 seconds
+    
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                if (system) {
+                    systemSelect.value = system;
+                    emulator.setSystem(system);
+                }
+    
+                status.textContent =
+                    attempt === 1
+                        ? "Downloading ROM..."
+                        : `Retrying ROM download (${attempt}/${MAX_RETRIES})...`;
+    
+                const response = await fetch(romUrl);
+    
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+    
+                const blob = await response.blob();
+    
+                const fileName = romUrl.split("/").pop() || "game.gba";
+                const file = new File([blob], fileName);
+    
+                emulator.stop();
+    
+                if (system === "nes") {
+                    await emulator.loadNES(file);
+                } else {
+                    await emulator.loadGBA(file);
+                }
+    
+                status.textContent = `Playing: ${fileName}`;
+                return; // Success, exit retry loop
+            } catch (err) {
+                console.error(`Attempt ${attempt} failed:`, err);
+    
+                if (attempt === MAX_RETRIES) {
+                    status.textContent = "Failed to load ROM";
+                    return;
+                }
+    
+                status.textContent =
+                    `Load failed. Retrying in 5 seconds... (${attempt}/${MAX_RETRIES})`;
+    
+                await new Promise(resolve =>
+                    setTimeout(resolve, RETRY_DELAY)
+                );
             }
-
-            status.textContent = "Downloading ROM...";
-
-            const response = await fetch(romUrl);
-            const blob = await response.blob();
-
-            const fileName = romUrl.split("/").pop() || "game.gba";
-            const file = new File([blob], fileName);
-
-            emulator.stop();
-
-            if (system === "nes") {
-                await emulator.loadNES(file);
-            } else {
-                await emulator.loadGBA(file);
-            }
-
-            status.textContent = `Playing: ${fileName}`;
-        } catch (err) {
-            console.error(err);
-            status.textContent = "Failed to load ROM";
         }
     })();
     // Initial sync
