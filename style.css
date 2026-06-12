@@ -938,3 +938,25 @@ body.system-gba #touchControls {
     .action-a, .action-b { width: 55px; height: 55px; font-size: 1.2rem; }
     .system-select, .system-start { min-width: 64px; height: 28px; font-size: 0.62rem; }
 }
+.game-launcher {
+    width: 100%;
+}
+
+#gameList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.game-entry {
+    padding: 12px;
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s;
+}
+
+.game-entry:hover {
+    background: rgba(255,255,255,.1);
+}
