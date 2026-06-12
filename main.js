@@ -227,7 +227,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 emulator.stop();
     
                 emulator.setSystem("gba");
-    
+                syncSystemClass();
+                syncTouchOverlay();
                 await emulator.loadGBA(file);
     
                 status.textContent = `Playing ${gameName}`;
@@ -265,6 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gameList.appendChild(entry);
     });
     // Initial sync
-    syncSystemClass();
-    syncTouchOverlay();
+    //syncSystemClass();
+    //syncTouchOverlay();
 });
