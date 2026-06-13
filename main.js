@@ -186,57 +186,54 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
     async function loadSelectedGame(game) {
-    
+        const system = 'gba';
+        const rom = game.romUrl;
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000;
-        console.log(` '${game.rom}' `);
+        console.log("rather");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    
             try {
-               // systemSelect.value = "gba";
-                // emulator.setSystem("gba");
-                
+                if (system) {
+                    systemSelect.value = system;
+                    emulator.setSystem(system);
+                }
+    
                 status.textContent =
                     attempt === 1
-                        ? `Loading ${game.name}...`
-                        : `Retry ${attempt}/${MAX_RETRIES}...`;
+                        ? "Downloading ROM..."
+                        : `Retrying ROM download (${attempt}/${MAX_RETRIES})...`;
     
-                const response = await fetch(game.rom);
+                const response = await fetch(romUrl);
     
                 if (!response.ok) {
-                    throw new Error(
-                        `HTTP ${response.status}`
-                    );
+                    throw new Error(`HTTP ${response.status}`);
                 }
     
                 const blob = await response.blob();
     
-                const file = new File(
-                    [blob],
-                    game.rom.split("/").pop(),
-                    { type: blob.type }
-                );
+                const fileName = romUrl.split("/").pop() || "game.gba";
+                const file = new File([blob], fileName);
     
                 emulator.stop();
     
-                await emulator.loadGBA(file);
+                if (system === "nes") {
+                    await emulator.loadNES(file);
+                } else {
+                    await emulator.loadGBA(file);
+                }
     
-                status.textContent =
-                    `Playing ${game.name}`;
-    
-                return;
-    
+                status.textContent = `Playing: ${fileName}`;
+                return; // Success, exit retry loop
             } catch (err) {
-    
-                console.error(err);
+                console.error(`Attempt ${attempt} failed:`, err);
     
                 if (attempt === MAX_RETRIES) {
-    
-                    status.textContent =
-                        `Failed to load ${game.name}`;
-    
+                    status.textContent = "Failed to load ROM";
                     return;
                 }
+    
+                status.textContent =
+                    `Load failed. Retrying in 5 seconds... (${attempt}/${MAX_RETRIES})`;
     
                 await new Promise(resolve =>
                     setTimeout(resolve, RETRY_DELAY)
