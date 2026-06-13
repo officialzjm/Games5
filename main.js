@@ -189,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000;
-        console.log(" '${game.rom}' ");
+        console.log(` '${game.rom}' `);
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     
             try {
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000; // 5 seconds
-        console.log("already");
+        console.log("test");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (system) {
