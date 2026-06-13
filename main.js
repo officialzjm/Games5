@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------------------------------
     // System selection
     // -----------------------------------------------------------
+    /*
     systemSelect.addEventListener('change', async (e) => {
         const system = e.target.value;
         emulator.setSystem(system);
@@ -92,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             syncTouchOverlay();
         });
     }
-    
+    /*
 
     // -----------------------------------------------------------
     // ROM loader
