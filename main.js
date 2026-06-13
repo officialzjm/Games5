@@ -189,24 +189,19 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000;
-    
+        console.log(" '${game.rom}' ");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     
             try {
-                systemSelect.value = "gba";
-                emulator.setSystem("gba");
+               // systemSelect.value = "gba";
+                // emulator.setSystem("gba");
                 
                 status.textContent =
                     attempt === 1
                         ? `Loading ${game.name}...`
                         : `Retry ${attempt}/${MAX_RETRIES}...`;
     
-                const response = await fetch(
-                    game.rom,
-                    {
-                        cache: "reload"
-                    }
-                );
+                const response = await fetch(game.rom);
     
                 if (!response.ok) {
                     throw new Error(
@@ -292,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000; // 5 seconds
-        console.log("startedeee");
+        console.log("already");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (system) {
