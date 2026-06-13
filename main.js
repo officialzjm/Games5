@@ -187,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
     async function loadSelectedGame(game) {
         const system = 'gba';
-        const rom = game.romUrl;
+        const romUrl = game.rom;
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000;
         console.log("rather");
@@ -284,7 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000; // 5 seconds
-        console.log("test");
+        console.log("test2");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (system) {
