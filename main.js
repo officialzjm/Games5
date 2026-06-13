@@ -172,32 +172,21 @@ document.addEventListener('DOMContentLoaded', () => {
         emulator.log('Emulator ready');
     }
     // Auto-load ROM from URL
-    const games = [
-        "Pokemon Emerald",
-        "Pokemon Fire Red",
-        "Pokemon Leaf Green"
+   const games = [
+        {
+            name: "Pokemon Emerald",
+            rom: "roms/pokemonemerald.gba"
+        },
+        {
+            name: "Pokemon Fire Red",
+            rom: "roms/pokemonfirered.gba"
+        },
+        {
+            name: "Pokemon Leaf Green",
+            rom: "roms/pokemonleafgreen.gba"
+        }
     ];
-    
-    const gameList = document.getElementById("gameList");
-    const launcher = document.getElementById("gameLauncher");
-    const screen = document.getElementById("screen");
-    
-    function gameToFilename(name) {
-        return name
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, "")
-            + ".gba";
-    }
-    /*
-    async function loadSelectedGame(gameName) {
-    
-        launcher.style.display = "none";
-        screen.style.display = "block";
-    
-        const romFileName = gameToFilename(gameName);
-    
-        // Change this to wherever your ROMs live
-        const romUrl = `roms/${romFileName}`;
+    async function loadSelectedGame(game) {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000;
@@ -205,32 +194,41 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
     
             try {
-                systemSelect.value = "gba";
-                emulator.setSystem("gba");
-
+    
                 status.textContent =
                     attempt === 1
-                        ? `Loading ${gameName}...`
+                        ? `Loading ${game.name}...`
                         : `Retry ${attempt}/${MAX_RETRIES}...`;
     
-                const response = await fetch(romUrl);
+                const response = await fetch(
+                    game.rom,
+                    {
+                        cache: "reload"
+                    }
+                );
     
                 if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
+                    throw new Error(
+                        `HTTP ${response.status}`
+                    );
                 }
     
                 const blob = await response.blob();
     
                 const file = new File(
                     [blob],
-                    romFileName
+                    game.rom.split("/").pop()
                 );
     
                 emulator.stop();
     
+                systemSelect.value = "gba";
+                emulator.setSystem("gba");
+    
                 await emulator.loadGBA(file);
-                
-                status.textContent = `Playing ${gameName}`;
+    
+                status.textContent =
+                    `Playing ${game.name}`;
     
                 return;
     
@@ -239,8 +237,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.error(err);
     
                 if (attempt === MAX_RETRIES) {
+    
                     status.textContent =
-                        `Failed to load ${gameName}`;
+                        `Failed to load ${game.name}`;
+    
                     return;
                 }
     
@@ -250,44 +250,47 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-    */
-    async function loadSelectedGame(gameName) {
+    const pickerBtn = document.getElementById("gamePickerBtn");
+    const pickerDropdown = document.getElementById("gamePickerDropdown");
+    const searchBox = document.getElementById("gameSearch");
+    const gameList = document.getElementById("gameList");
     
-        alert("Clicked " + gameName);
-    
-        const romFileName = gameToFilename(gameName);
-        const romUrl = `roms/${romFileName}`;
-    
-        alert("About to fetch");
-    
-        const response = await fetch(romUrl);
-    
-        alert("Fetch finished");
-        console.log(response);
-        console.log(response.headers.get("content-type"));
-        console.log(response.headers.get("content-length"));
-        
-        //const blob = await response.blob();
-        //alert("Blob size: " + blob.size);
-    
-        // ONLY NOW show emulator UI
-        launcher.style.display = "none";
-        screen.style.display = "block";
-        return;
-    }
-    games.forEach(game => {
-    
-        const entry = document.createElement("div");
-    
-        entry.className = "game-entry";
-        entry.textContent = game;
-    
-        entry.addEventListener("click", () => {
-            loadSelectedGame(game);
-        });
-    
-        gameList.appendChild(entry);
+    pickerBtn.addEventListener("click", () => {
+        pickerDropdown.classList.toggle("open");
     });
+    
+    function renderGames(filter = "") {
+    
+        gameList.innerHTML = "";
+    
+        const filtered = games.filter(game =>
+            game.name.toLowerCase().includes(
+                filter.toLowerCase()
+            )
+        );
+    
+        filtered.forEach(game => {
+    
+            const entry = document.createElement("div");
+    
+            entry.className = "game-entry";
+            entry.textContent = game.name;
+    
+            entry.addEventListener("click", () => {
+                pickerDropdown.classList.remove("open");
+                loadSelectedGame(game);
+            });
+    
+            gameList.appendChild(entry);
+        });
+    }
+    
+    searchBox.addEventListener("input", () => {
+        renderGames(searchBox.value);
+    });
+    
+    renderGames();
+    
     // Initial sync
     //syncSystemClass();
     //syncTouchOverlay();
