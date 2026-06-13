@@ -219,7 +219,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
                 const file = new File(
                     [blob],
-                    game.rom.split("/").pop()
+                    game.rom.split("/").pop(),
+                    { type: blob.type }
                 );
     
                 emulator.stop();
@@ -294,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 systemSelect.value = system;
                 emulator.setSystem(system);
             }
-            console.log('great');
+            console.log('wow');
         } catch (err) {
             console.error(err);
             status.textContent = "Failed to load ROM";
