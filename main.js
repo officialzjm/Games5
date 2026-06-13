@@ -287,7 +287,19 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBox.addEventListener("input", () => {
         renderGames(searchBox.value);
     });
-    
+    (async () => {
+        const system = "gba";
+         try {
+            if (system) {
+                systemSelect.value = system;
+                emulator.setSystem(system);
+            }
+            console.log('great');
+        } catch (err) {
+            console.error(err);
+            status.textContent = "Failed to load ROM";
+        }
+    })();
     renderGames();
     
     // Initial sync
