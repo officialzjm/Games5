@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
             syncTouchOverlay();
         });
     }
-    /*
+    */
 
     // -----------------------------------------------------------
     // ROM loader
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000; // 5 seconds
-        console.log("test2");
+        console.log("test22");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (system) {
