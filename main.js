@@ -288,17 +288,35 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBox.addEventListener("input", () => {
         renderGames(searchBox.value);
     });
-    (async () => {
+    (async () => {    
         const system = "gba";
-         try {
-            if (system) {
-                systemSelect.value = system;
-                emulator.setSystem(system);
+    
+        const MAX_RETRIES = 5;
+        const RETRY_DELAY = 5000; // 5 seconds
+        console.log("startede");
+        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+            try {
+                if (system) {
+                    systemSelect.value = system;
+                    emulator.setSystem(system);
+                }
+    
+                return; 
+            } catch (err) {
+                console.error(`Attempt ${attempt} failed:`, err);
+    
+                if (attempt === MAX_RETRIES) {
+                    status.textContent = "Failed to load ROM";
+                    return;
+                }
+    
+                status.textContent =
+                    `Load failed. Retrying in 5 seconds... (${attempt}/${MAX_RETRIES})`;
+    
+                await new Promise(resolve =>
+                    setTimeout(resolve, RETRY_DELAY)
+                );
             }
-            console.log('wow');
-        } catch (err) {
-            console.error(err);
-            status.textContent = "Failed to load ROM";
         }
     })();
     renderGames();
