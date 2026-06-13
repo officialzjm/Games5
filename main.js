@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         syncTouchOverlay();
     });
-    /*
+    
     if (gbaEngineSelect) {
         gbaEngineSelect.addEventListener('change', async (e) => {
             emulator.setGBAEngine(e.target.value);
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
             syncTouchOverlay();
         });
     }
-    */
+    
 
     // -----------------------------------------------------------
     // ROM loader
