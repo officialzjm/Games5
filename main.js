@@ -263,18 +263,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const response = await fetch(romUrl);
     
         alert("Fetch finished");
-    
+        console.log(response);
+        console.log(response.headers.get("content-type"));
+        console.log(response.headers.get("content-length"));
+        
         //const blob = await response.blob();
-        const buffer = await response.arrayBuffer();
-        
-        alert(buffer.byteLength);
-        
-        return;
         //alert("Blob size: " + blob.size);
     
         // ONLY NOW show emulator UI
         launcher.style.display = "none";
         screen.style.display = "block";
+        return;
     }
     games.forEach(game => {
     
