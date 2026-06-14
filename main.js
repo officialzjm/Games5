@@ -179,11 +179,11 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             name: "Pokemon Fire Red",
-            rom: "roms/pokemonfirered.gba"
+            rom: "roms/pokemonred.gba"
         },
         {
             name: "Pokemon Leaf Green",
-            rom: "roms/pokemonleafgreen.gba"
+            rom: "roms/pokemongreen.gba"
         }
     ];
     async function loadSelectedGame(game) {
@@ -204,11 +204,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         ? "Downloading ROM..."
                         : `Retrying ROM download (${attempt}/${MAX_RETRIES})...`;
     
-                const response = await fetch(romUrl);
+                const response = await fetch(romUrl, {
+                    cache: "no-store"
+                });
     
                 if (!response.ok) {
                     throw new Error(`HTTP ${response.status}`);
                 }
+                console.log(response.headers.get("content-type"));
+                console.log(response.headers.get("content-length"));
                 console.log(1);
                 const blob = await response.blob();
                 console.log(2);
@@ -287,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         const MAX_RETRIES = 5;
         const RETRY_DELAY = 5000; // 5 seconds
-        console.log("test3");
+        console.log("test4");
         for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
             try {
                 if (system) {
