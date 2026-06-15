@@ -12,6 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const gbaEngineSelect = document.getElementById('gbaEngineSelect');
     const gbaSaveHint = document.getElementById('gbaSaveHint');
 
+    const pickerBtn = document.getElementById("gamePickerBtn");
+    const pickerDropdown = document.getElementById("gamePickerDropdown");
+    const searchBox = document.getElementById("gameSearch");
+    const gameList = document.getElementById("gameList");
     // Core managers
     const emulator = new EmulatorManager(canvas, ctx, status, debug);
     const inputHandler = new InputHandler(emulator);
@@ -58,18 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------------------------------
     // System selection
     // -----------------------------------------------------------
-    /*
-    systemSelect.addEventListener('change', async (e) => {
-        const system = e.target.value;
+    function changeSystem(system) {
+        console.log('Changing system');
+        systemSelect.value = system;
         emulator.setSystem(system);
+        console.log(system);
         status.textContent = `System: ${systemSelect.options[systemSelect.selectedIndex].text} - Load a ROM file`;
         if (system === 'gba' && gbaEngineSelect && gbaEngineSelect.value === 'iodine') {
             emulator.setGBAEngine('iodine');
             emulator.loadGBA();
         }
         syncTouchOverlay();
-    });
-    
+        console.log('System change complete');
+    }
+    /*
     if (gbaEngineSelect) {
         gbaEngineSelect.addEventListener('change', async (e) => {
             emulator.setGBAEngine(e.target.value);
@@ -98,9 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------------------------------
     // ROM loader
     // -----------------------------------------------------------
-    /*
-    romFile.addEventListener('change', async (e) => {
-        const file = e.target.files[0];
+    
+    function loadRom(romUrl);
+    
+        const response = await fetch(romUrl);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const blob = await response.blob();
+
+        const fileName = romUrl.split("/").pop() || "game.gba";
+        const file = new File([blob], fileName);
+
         if (!file) return;
 
         status.textContent = 'Loading ROM...';
@@ -122,41 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error(err);
         }
     });
-    */
-    /* Never tested these functions, just noticed the downlaod feature hidden in settings :cry:
-    async function exportState() {
-        const romUrl = params.get("rom");
-        const fileName = romUrl.split("/").pop() || "game.gba";
-        
-        const state = await window.EJS_emulator.storage.states.get(fileName);
     
-        const blob = new Blob([state], {
-            type: "application/octet-stream"
-        });
-    
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = key;
-        a.click();
-    
-        URL.revokeObjectURL(a.href);
-    }
-    async function importState(file) {
-        const romUrl = params.get("rom");
-        const fileName = romUrl.split("/").pop() || "game.gba";
-        
-        const state = await window.EJS_emulator.storage.states.get(fileName);
-    
-        const data = new Uint8Array(await file.arrayBuffer());
-    
-        await window.EJS_emulator.storage.states.put(
-            fileName,
-            data
-        );
-    
-        alert("State imported");
-    }
-    */
     // Canvas focus helper for keyboard input
     canvas.setAttribute('tabindex', '0');
     canvas.addEventListener('keydown', (e) => e.preventDefault());
@@ -171,8 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
         status.textContent = 'Ready! Select a system and load a ROM file.';
         emulator.log('Emulator ready');
     }
-    // Auto-load ROM from URL
-   const games = [
+   
+    const games = [
         {
             name: "Pokemon Emerald",
             rom: "roms/pokemonemerald.gba"
@@ -186,73 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
             rom: "roms/pokemongreen.gba"
         }
     ];
-    async function loadSelectedGame(game) {
-        const system = 'gba';
-        const romUrl = game.rom;
-        const MAX_RETRIES = 5;
-        const RETRY_DELAY = 5000;
-        console.log("rather");
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                if (system) {
-                    systemSelect.value = system;
-                    emulator.setSystem(system);
-                }
-    
-                status.textContent =
-                    attempt === 1
-                        ? "Downloading ROM..."
-                        : `Retrying ROM download (${attempt}/${MAX_RETRIES})...`;
-    
-                const response = await fetch(romUrl, {
-                    cache: "no-store"
-                });
-    
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-                console.log(response.headers.get("content-type"));
-                console.log(response.headers.get("content-length"));
-                console.log(response);
-                console.log(1);
-                const blob = await response.blob();
-                console.log(2);
-                console.log("ROM bytes:", blob.size);
-                console.log(5);
-                const fileName = romUrl.split("/").pop() || "game.gba";
-                const file = new File([blob], fileName);
-                console.log(3);
-                emulator.stop();
-                console.log(4);
-                if (system === "nes") {
-                    await emulator.loadNES(file);
-                } else {
-                    await emulator.loadGBA(file);
-                }
-    
-                status.textContent = `Playing: ${fileName}`;
-                return; // Success, exit retry loop
-            } catch (err) {
-                console.error(`Attempt ${attempt} failed:`, err);
-    
-                if (attempt === MAX_RETRIES) {
-                    status.textContent = "Failed to load ROM";
-                    return;
-                }
-    
-                status.textContent =
-                    `Load failed. Retrying in 5 seconds... (${attempt}/${MAX_RETRIES})`;
-    
-                await new Promise(resolve =>
-                    setTimeout(resolve, RETRY_DELAY)
-                );
-            }
-        }
-    }
-    const pickerBtn = document.getElementById("gamePickerBtn");
-    const pickerDropdown = document.getElementById("gamePickerDropdown");
-    const searchBox = document.getElementById("gameSearch");
-    const gameList = document.getElementById("gameList");
     
     pickerBtn.addEventListener("click", () => {
         pickerDropdown.classList.toggle("open");
@@ -277,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
             entry.addEventListener("click", () => {
                 pickerDropdown.classList.remove("open");
-                loadSelectedGame(game);
+                loadRom(game.rom);
             });
     
             gameList.appendChild(entry);
@@ -287,37 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchBox.addEventListener("input", () => {
         renderGames(searchBox.value);
     });
-    (async () => {    
-        const system = "gba";
-    
-        const MAX_RETRIES = 5;
-        const RETRY_DELAY = 5000; // 5 seconds
-        console.log("test40");
-        for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-            try {
-                if (system) {
-                    systemSelect.value = system;
-                    emulator.setSystem(system);
-                }
-    
-                return; 
-            } catch (err) {
-                console.error(`Attempt ${attempt} failed:`, err);
-    
-                if (attempt === MAX_RETRIES) {
-                    status.textContent = "Failed to load ROM";
-                    return;
-                }
-    
-                status.textContent =
-                    `Load failed. Retrying in 5 seconds... (${attempt}/${MAX_RETRIES})`;
-    
-                await new Promise(resolve =>
-                    setTimeout(resolve, RETRY_DELAY)
-                );
-            }
-        }
-    })();
+
     renderGames();
     
     // Initial sync
