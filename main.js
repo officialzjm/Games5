@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ROM loader
     // -----------------------------------------------------------
     
-    function loadRom(romUrl) {
+    async function loadRom(romUrl) {
         console.log('loadRom called');
         const response = await fetch(romUrl);
 
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test2');
+    console.log('Games5 Test3');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
