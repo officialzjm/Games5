@@ -113,7 +113,26 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Invalid response');
             throw new Error(`HTTP ${response.status}`);
         }
-        console.log(response.bodyUsed);
+        const reader = response.body.getReader();
+        
+        let received = 0;
+        
+        while (true) {
+            const { done, value } = await reader.read();
+        
+            if (done) {
+                console.log("DONE");
+                break;
+            }
+        
+            received += value.length;
+            console.log(received);
+        }
+        console.log('split');
+        console.log(response.status);
+        console.log(response.ok);
+        console.log(response.headers.get("content-length"));
+        
         const blob = await response.blob();
         console.log('Blob');
         const fileName = romUrl.split("/").pop() || "game.gba";
@@ -208,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test3');
+    console.log('Games5 Test4');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
