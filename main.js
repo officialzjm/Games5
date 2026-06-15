@@ -113,20 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Invalid response');
             throw new Error(`HTTP ${response.status}`);
         }
-        console.log("bodyUsed:", response.bodyUsed);
-        console.log("Creating buffer...");
-        const buffer = await response.arrayBuffer();
-        console.log("Buffer finished", buffer.byteLength);
-        
-        const file = new File(
-            [buffer],
-            fileName,
-            { type: "application/octet-stream" }
-        );
-        
-        console.log("Loading emulator...");
-        await emulator.loadGBA(file);
-        console.log("Done");
+
         /*
         const blob = await response.blob();
         console.log('Blob');
@@ -211,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.addEventListener("click", () => {
                 pickerDropdown.classList.remove("open");
                 changeSystem(game.rom.split('.').pop());
-                loadRom(game.rom);
+                await loadRom(game.rom);
             });
     
             gameList.appendChild(entry);
@@ -223,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test5');
+    console.log('Games5 Test6');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
