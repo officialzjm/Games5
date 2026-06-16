@@ -116,19 +116,18 @@ document.addEventListener('DOMContentLoaded', () => {
             throw new Error(`HTTP ${response.status}`);
         }
 
-        /*
+        
         const blob = await response.blob();
         console.log('Blob');
         const fileName = romUrl.split("/").pop() || "game.gba";
         console.log(`Loading rom: '${fileName}'`);
         const file = new File([blob], fileName);
-        */
         
         if (!file) return;
         console.log('File found');
         status.textContent = 'Loading ROM...';
         emulator.log('Reading ROM file...');
-
+        return;
         try {
             emulator.stop();
 
@@ -212,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test7');
+    console.log('Games5 Test8');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
