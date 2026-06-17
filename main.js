@@ -106,10 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------------------------------
     
     async function loadRom(romUrl) {
-        console.count("loadRom");
-        console.trace("loadRom");
         console.log('loadRom called');
-        const response = await fetch(romUrl);
+        
+        const response = await fetch('https://officialzjm.github.io/Games4/roms/pokemonemerald.gba');
 
         if (!response.ok) {
             console.log('Invalid response');
@@ -119,7 +118,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const blob = await response.blob();
         console.log('Blob');
-        const fileName = romUrl.split("/").pop() || "game.gba";
+        //const fileName = romUrl.split("/").pop() || "game.gba";
+        const fileName = 'pokemonemerald.gba'
         console.log(`Loading rom: '${fileName}'`);
         const file = new File([blob], fileName);
         
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test101');
+    console.log('Games5 Test1012');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
