@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // -----------------------------------------------------------
     // System selection
     // -----------------------------------------------------------
-    function changeSystem(system) {
+    async function changeSystem(system) {
         console.log('Changing system');
         systemSelect.value = system;
         emulator.setSystem(system);
@@ -75,9 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
         syncTouchOverlay();
         console.log('System change complete');
     }
-    /*
+
     if (gbaEngineSelect) {
-        gbaEngineSelect.addEventListener('change', async (ef => {
+        gbaEngineSelect.addEventListener('change', async (e) => {
             emulator.setGBAEngine(e.target.value);
             if (emulator.currentSystem !== 'gba') return;
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
             syncTouchOverlay();
         });
     }
-    */
+    
 
     // -----------------------------------------------------------
     // ROM loader
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
             entry.addEventListener("click", async (e) => {
                 pickerDropdown.classList.remove("open");
-                changeSystem(game.rom.split('.').pop());
+                await changeSystem(game.rom.split('.').pop());
                 await loadRom(game.rom);        
 
             });
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test10');
+    console.log('Games5 Test101');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
