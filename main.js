@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     /*
     if (gbaEngineSelect) {
-        gbaEngineSelect.addEventListener('change', async (e) => {
+        gbaEngineSelect.addEventListener('change', async (ef => {
             emulator.setGBAEngine(e.target.value);
             if (emulator.currentSystem !== 'gba') return;
 
@@ -127,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('File found');
         status.textContent = 'Loading ROM...';
         emulator.log('Reading ROM file...');
-        return;
         try {
             emulator.stop();
 
@@ -196,10 +195,11 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.className = "game-entry";
             entry.textContent = game.name;
     
-            entry.addEventListener("click", () => {
+            entry.addEventListener("click", async (e) => {
                 pickerDropdown.classList.remove("open");
                 changeSystem(game.rom.split('.').pop());
-                loadRom(game.rom);
+                await loadRom(game.rom);        
+
             });
     
             gameList.appendChild(entry);
@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderGames();
-    console.log('Games5 Test8');
+    console.log('Games5 Test10');
     // Initial sync
     syncSystemClass();
     syncTouchOverlay();
